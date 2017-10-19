@@ -1,0 +1,49 @@
+﻿@model List<GestionEtudiants.Models.Etudiant>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        function ChargementDonnee() {
+            
+            var id = $("#Matricule").val();
+            $.ajax({
+                dataType: 'json',
+                type: 'POST',
+                url: '/Home/GetStudentInfo/' + id,
+                success: function (etudiant) {
+                    $('#nom').text(etudiant.Nom);
+                    $('#prenom').text(etudiant.Prenom);
+                    $('#localite').text(etudiant.Localite);
+                }
+
+            });
+        }
+    </script>
+</head>
+<body>
+    <div> 
+        <form>
+            <select id="Matricule" onchange="ChargementDonnee()">
+                <option value="" disabled selected >--Selectionner un </option>
+                    @foreach ( var etudiant in Model)
+                    {
+                        <option value="@etudiant.Matricule">@etudiant.Matricule</option>
+                    }
+                
+            </select><br />
+                <label>Nom:</label><span id="nom"></span><br />
+                <label>Prenom:</label><span id="prenom"></span><br />
+                <label>Localite:</label><span id="localite"></span><br />
+        </form>
+    </div>
+</body>
+</html>
